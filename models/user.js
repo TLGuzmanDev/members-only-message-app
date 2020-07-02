@@ -24,6 +24,7 @@ const UserSchema = new Schema(
     },
     membership_status: {
       type: Boolean,
+      required: true,
     },
   },
   { timestamps: true }

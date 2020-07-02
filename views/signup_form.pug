@@ -8,19 +8,35 @@ block content
 
       form(action='' method='POST')
         .form-group
-          label(for='firstName') First name
-          input#firstName.form-control(type='text' placeholder='Enter first name' required)
+          label(for='firstname') First name
+          input#firstname.form-control(type='text' name='firstname' placeholder='Enter first name' value=(user ? user.firstname: '') required)
+          if errors
+            each error in errors
+              if error.param === 'firstname'
+                .small.text-danger - #{error.msg}
 
         .form-group
-          label(for='lastName') Last name
-          input#lastName.form-control(type='text' placeholder='Enter last name' required)
+          label(for='lastname') Last name
+          input#lastname.form-control(type='text' name='lastname' placeholder='Enter last name' value=(user ? user.lastname: '') required)
+          if errors
+            each error in errors
+              if error.param === 'lastname'
+                .small.text-danger - #{error.msg}
 
         .form-group
           label(for='username') Username
-          input#username.form-control(type='text' placeholder='Enter username' required)
+          input#username.form-control(type='text' name='username' placeholder='Enter username' value=(user ? user.username: '') required)
+          if errors
+            each error in errors
+              if error.param === 'username'
+                .small.text-danger - #{error.msg}
         
         .form-group
           .label(for='password') Password
-          input#password.form-control(type='password' placeholder='Password' required)
+          input#password.form-control(type='password' name='password' placeholder='Password' required)
+          if errors
+            each error in errors
+              if error.param === 'password'
+                .small.text-danger - #{error.msg}
 
         button.btn.btn-primary(type='submit') Submit
