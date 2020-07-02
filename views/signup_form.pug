@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  .row.d-flex.justify-content-center
+    .col-sm-6
+      h1.my-3= title
+      hr
+      form(action='' method='POST')
+        .form-group
+          label(for='username') Email address
+          input#username.form-control(type='email' placeholder='Enter email' required)
+        
+        .form-group
+          .label(for='password') Password
+          input#password.form-control(type='password' placeholder='Password' required)
+        button.btn.btn-primary(type='submit') Submit

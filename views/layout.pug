@@ -13,6 +13,11 @@ html(lang='en')
     //- project stylesheet
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    nav.navbar.navbar-light.bg-light.shadow-sm
+      a.navbar-brand.fancy.p-2(href='/') Members Only App
+      div.p-2
+        a.btn.btn-primary.btn-sm.mr-2(href='/login') LOGIN
+        a.btn.btn-primary.btn-sm(href='/signup') SIGN UP
     .container
       block content
 
