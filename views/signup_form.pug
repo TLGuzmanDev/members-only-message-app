@@ -5,12 +5,22 @@ block content
     .col-sm-6
       h1.my-3= title
       hr
+
       form(action='' method='POST')
         .form-group
-          label(for='username') Email address
-          input#username.form-control(type='email' placeholder='Enter email' required)
+          label(for='firstName') First name
+          input#firstName.form-control(type='text' placeholder='Enter first name' required)
+
+        .form-group
+          label(for='lastName') Last name
+          input#lastName.form-control(type='text' placeholder='Enter last name' required)
+
+        .form-group
+          label(for='username') Username
+          input#username.form-control(type='text' placeholder='Enter username' required)
         
         .form-group
           .label(for='password') Password
           input#password.form-control(type='password' placeholder='Password' required)
+
         button.btn.btn-primary(type='submit') Submit
