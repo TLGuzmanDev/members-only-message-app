@@ -2,32 +2,37 @@ const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/user');
 
+// Display homepage
 const index = (req, res, next) => {
   res.render('index', {
     title: 'Welcome',
   });
 };
 
+// Display User create form on GET
 const signup_get = (req, res, next) => {
   res.render('signup_form', {
     title: 'Sign Up',
   });
 };
 
+// Handle User create form on POST
 const signup_post = [
-  // validate and sanitze form data
+  // Validate and sanitze form data
   body('firstname', 'Invalid first name').trim().isAlpha(),
   body('lastname', 'Invalid last name').trim().isAlpha(),
   body('username', 'Invalid username').trim().isAlphanumeric(),
   body('password', 'Invalid password').trim().isLength({ min: 6 }),
   body('*').escape(),
+
+  // Process request after validation and sanitization
   async (req, res, next) => {
-    // get validation errors from req
+    // Extract validation errors from request
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      // request contained errors
-      // render form again including form data and errors
+      // Request contained errors
+      // Render form with sanitized values and errors
       return res.render('signup_form', {
         title: 'Sign Up',
         user: req.body,
@@ -35,7 +40,8 @@ const signup_post = [
       });
     } else {
       try {
-        // create user with form data and hashed password
+        // Request Data is valid
+        // Create user object with form data and hashed password
         const hash = await bcrypt.hash(req.body.password, 10);
         const user = new User({
           first_name: req.body.firstname,
@@ -45,8 +51,26 @@ const signup_post = [
           membership_status: true,
         });
 
-        await user.save();
-        return res.redirect('/');
+        // Check if username already exist
+        const found_user = User.findOne({ username: user.username }).exec();
+        if (found_user) {
+          // Username exist
+          // Render form with sanitized values and errors
+          return res.render('signup_form', {
+            title: 'Sign Up',
+            user: req.body,
+            errors: [
+              {
+                param: 'username',
+                msg: 'Username already in use.',
+              },
+            ],
+          });
+        } else {
+          // Save user and redirect to index page
+          await user.save();
+          return res.redirect('/');
+        }
       } catch (error) {
         return next(error);
       }
@@ -54,6 +78,7 @@ const signup_post = [
   },
 ];
 
+// Display login form on GET
 const login_get = (req, res, next) => {
   res.render('login_form', {
     title: 'Login',
