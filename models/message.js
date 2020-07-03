@@ -6,6 +6,7 @@ const MessageSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
     },
     title: {
       type: String,
@@ -14,7 +15,6 @@ const MessageSchema = new Schema(
     text: {
       type: String,
       required: true,
-      true: true,
     },
   },
   { timestamps: true }

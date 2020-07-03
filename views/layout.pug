@@ -12,12 +12,27 @@ html(lang='en')
 
     //- project stylesheet
     link(rel='stylesheet', href='/stylesheets/style.css')
+
   body
-    nav.navbar.navbar-light.bg-light.shadow-sm
-      a.navbar-brand.fancy.p-2(href='/') Members Only App
-      div.p-2
-        a.btn.btn-primary.btn-sm.mr-2(href='/login') LOGIN
-        a.btn.btn-primary.btn-sm(href='/signup') SIGN UP
+    nav.navbar.navbar-expand-sm.navbar-light.bg-light.shadow-sm
+      a.navbar-brand.fancy(href='/') Members Only App
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarContent.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+          if user
+            li.nav-item.dropdown
+              a#dropdown.nav-link.dropdown-toggle.text-capitalize(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                | Welcome #{user.name}
+              .dropdown-menu.dropdown-menu-right
+                a.dropdown-item(href='/message/create') ADD MESSAGE
+                a.dropdown-item(href='/logout') LOGOUT
+          else
+            li.nav-item.m-1
+              a.btn.btn-outline-primary.btn-sm(href='/login') LOGIN
+            li.nav-item.m-1
+              a.btn.btn-primary.btn-sm(href='/signup') SIGN UP
+
     .container
       block content
 

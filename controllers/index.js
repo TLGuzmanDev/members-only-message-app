@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/user');
 
@@ -6,6 +7,7 @@ const User = require('../models/user');
 const index = (req, res, next) => {
   res.render('index', {
     title: 'Welcome',
+    user: req.user,
   });
 };
 
@@ -18,7 +20,7 @@ const signup_get = (req, res, next) => {
 
 // Handle User create form on POST
 const signup_post = [
-  // Validate and sanitze form data
+  // Validate and sanitize form data
   body('firstname', 'Invalid first name').trim().isAlpha(),
   body('lastname', 'Invalid last name').trim().isAlpha(),
   body('username', 'Invalid username').trim().isAlphanumeric(),
@@ -52,7 +54,10 @@ const signup_post = [
         });
 
         // Check if username already exist
-        const found_user = User.findOne({ username: user.username }).exec();
+        const found_user = await User.findOne({
+          username: user.username,
+        }).exec();
+
         if (found_user) {
           // Username exist
           // Render form with sanitized values and errors
@@ -85,9 +90,21 @@ const login_get = (req, res, next) => {
   });
 };
 
+const login_post = passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+});
+
+const logout = (req, res, next) => {
+  req.logout();
+  res.redirect('/');
+};
+
 module.exports = {
   index,
   signup_get,
   signup_post,
   login_get,
+  login_post,
+  logout,
 };

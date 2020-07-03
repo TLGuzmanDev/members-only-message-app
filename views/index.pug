@@ -1,4 +1,7 @@
 extends layout
 
 block content
-  h1= title
+  if user
+    h1 #{title} #{user.username}
+  else
+    h1= title
