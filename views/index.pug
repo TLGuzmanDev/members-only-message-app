@@ -1,7 +1,16 @@
 extends layout
 
 block content
-  if user
-    h1 #{title} #{user.username}
-  else
-    h1= title
+  .row.d-flex.justify-content-center
+    .col-sm-10.d-flex.flex-column.align-items-center
+      h1.m-3 Messages
+      .card.my-2.w-75.shadow-sm
+        .card-header
+          h5.card-title.mb-0 Title
+        .card-body
+          if user
+            h6.card-subtitle.text-muted by: Author
+          else
+            h6.card-subtitle.text-muted by: ******            
+
+          p.card-text Some quick example text to build on the card title and make up the bulk of the card's content.
