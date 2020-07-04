@@ -2,13 +2,22 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/user');
+const Message = require('../models/message');
 
 // Display homepage
 const index = (req, res, next) => {
-  res.render('index', {
-    title: 'Welcome',
-    user: req.user,
-  });
+  Message.find()
+    .populate('user')
+    .exec((err, messages) => {
+      if (err) {
+        return next(err);
+      }
+      res.render('index', {
+        title: 'Members Only',
+        user: req.user,
+        messages,
+      });
+    });
 };
 
 // Display User create form on GET
@@ -100,6 +109,57 @@ const logout = (req, res, next) => {
   res.redirect('/');
 };
 
+const message_create_get = (req, res, next) => {
+  res.render('message_form', {
+    title: 'Create Message',
+    user: req.user,
+  });
+};
+
+// Handle message create on POST
+const message_create_post = [
+  // Validate and sanitize form data
+  body('title', 'Invalid title').trim().isLength({ min: 1 }),
+  body('message', 'Invalid message').trim().isLength({ min: 1 }),
+  body('*').escape(),
+
+  // Process request after validation and sanitization
+  (req, res, next) => {
+    // check if user is logged in
+    if (!req.user) {
+      res.redirect('/login');
+    }
+    // Extract validation errors from request
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // Request contained errors
+      // Render form with sanitized values and errors
+      return res.render('message_form', {
+        title: 'Create Message',
+        user: req.user,
+        message: req.body,
+        errors: errors.array(),
+      });
+    } else {
+      // Request Data is valid
+      // Create message object with form data and hashed password
+      const message = new Message({
+        user: req.user.id,
+        title: req.body.title,
+        text: req.body.message,
+      });
+      // Save user and redirect to index page
+      message.save((err) => {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect('/');
+      });
+    }
+  },
+];
+
 module.exports = {
   index,
   signup_get,
@@ -107,4 +167,6 @@ module.exports = {
   login_get,
   login_post,
   logout,
+  message_create_get,
+  message_create_post,
 };

@@ -4,13 +4,30 @@ block content
   .row.d-flex.justify-content-center
     .col-sm-10.d-flex.flex-column.align-items-center
       h1.m-3 Messages
-      .card.my-2.w-75.shadow-sm
-        .card-header
-          h5.card-title.mb-0 Title
-        .card-body
-          if user
-            h6.card-subtitle.text-muted by: Author
-          else
-            h6.card-subtitle.text-muted by: ******            
 
-          p.card-text Some quick example text to build on the card title and make up the bulk of the card's content.
+      if messages.length
+        each message in messages
+          .card.my-2.w-75.shadow-sm
+            .card-header
+              h5.card-title.mb-0= message.title
+            .card-body
+              if user
+                h6.card-subtitle.text-muted.text-capitalize.mb-1 posted by #{message.user.name}
+                h6.card-subtitle.text-muted.text-capitalize #{message.user.updatedAt}
+              else
+                h6.card-subtitle.text-muted.mb-1 by: ******
+                h6.card-subtitle.text-muted **********
+
+              p.card-text=message.text
+      else
+        .card.my-2.w-75.shadow-sm
+          .card-header
+            h5.card-title.mb-0 No Messages available
+          .card-body
+            if user
+              h6.card-subtitle.text-muted by: Tony
+            else
+              h6.card-subtitle.text-muted by: ******            
+
+            p.card-text There are currently no messages. Sign up to become a member. Members can create messages,
+              |  and view the author of each message.

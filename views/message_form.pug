@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  .row.d-flex.justify-content-center
+    .col-sm-6
+      h1.my-3= title
+      hr
+
+      if user
+        form(action='' method='POST')
+          .form-group
+            label(for='user') User
+            input#user.form-control(type='text' name='user' value=(user.id) required readonly)
+          
+          .form-group
+            .label(for='title') Title
+            input#title.form-control(type='text' name='title' placeholder='Enter title' required)
+            if errors
+              each error in errors
+                if error.param === 'title'
+                  .small.text-danger - #{error.msg}
+
+          .form-group
+            .label(for='message') Message
+            textarea#message.form-control(type='text' name='message' placeholder='Enter message' rows='3' required)
+            if errors
+              each error in errors
+                if error.param === 'message'
+                  .small.text-danger - #{error.msg}
+
+          button.btn.btn-primary(type='submit') Submit
+
+      else
+        h5 This page is only for members

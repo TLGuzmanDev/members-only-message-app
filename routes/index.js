@@ -14,4 +14,8 @@ router.post('/login', indexController.login_post);
 
 router.get('/logout', indexController.logout);
 
+router.get('/message/create', indexController.message_create_get);
+
+router.post('/message/create', indexController.message_create_post);
+
 module.exports = router;
