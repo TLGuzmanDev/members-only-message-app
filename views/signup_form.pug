@@ -13,7 +13,7 @@ block content
           if errors
             each error in errors
               if error.param === 'firstname'
-                .small.text-danger - #{error.msg}
+                .small.text-danger= error.msg
 
         .form-group
           label(for='lastname') Last name
@@ -21,7 +21,7 @@ block content
           if errors
             each error in errors
               if error.param === 'lastname'
-                .small.text-danger - #{error.msg}
+                .small.text-danger= error.msg
 
         .form-group
           label(for='username') Username
@@ -29,7 +29,7 @@ block content
           if errors
             each error in errors
               if error.param === 'username'
-                .small.text-danger - #{error.msg}
+                .small.text-danger= error.msg
         
         .form-group
           .label(for='password') Password
@@ -37,6 +37,15 @@ block content
           if errors
             each error in errors
               if error.param === 'password'
-                .small.text-danger - #{error.msg}
+                .small.text-danger= error.msg
+
+        .form-group
+          .label(for='confirmpassword') Confirm password
+          input#confirmpassword.form-control(type='password' name='confirmpassword' placeholder='Confirm password' required)
+          if errors
+            each error in errors
+              if error.param === 'confirmpassword'
+                .small.text-danger= error.msg
+          
 
         button.btn.btn-primary(type='submit') Submit
