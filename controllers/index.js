@@ -67,7 +67,7 @@ const signup_post = [
           last_name: req.body.lastname,
           username: req.body.username,
           password: hash,
-          membership_status: true,
+          membership_status: false,
         });
 
         // Check if username already exist

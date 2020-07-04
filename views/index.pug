@@ -11,7 +11,7 @@ block content
             .card-header
               h5.card-title.mb-0= message.title
             .card-body
-              if user
+              if user && user.membership_status
                 h6.card-subtitle.text-muted.text-capitalize.mb-1 posted by #{message.user.name}
                 h6.card-subtitle.text-muted.text-capitalize #{message.elapsed_time}
               else
