@@ -27,6 +27,9 @@ const UserSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    admin_status: {
+      type: Boolean,
+    },
   },
   { timestamps: true }
 );

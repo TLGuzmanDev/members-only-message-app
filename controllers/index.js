@@ -34,7 +34,6 @@ const signup_post = [
   body('lastname', 'Invalid last name').trim().isAlpha(),
   body('username', 'Invalid username').trim().isAlphanumeric(),
   body('password', 'Invalid password').trim().isLength({ min: 6 }),
-  body('*').escape(),
 
   // Process request after validation and sanitization
   async (req, res, next) => {
