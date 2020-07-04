@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const { body, validationResult } = require('express-validator');
@@ -175,11 +176,12 @@ const membership_get = (req, res, next) => {
     user: req.user,
   });
 };
+
 const membership_post = [
   body('password')
     .trim()
     .custom((value) => {
-      if (value !== 'jokerz') {
+      if (value !== process.env.MEMBER_SECRET) {
         throw new Error('Sorry, password is incorrect.');
       }
       // success of custom validator
