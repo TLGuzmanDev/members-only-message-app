@@ -13,6 +13,7 @@ const indexRouter = require('./routes');
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
+  useFindAndModify: false,
 });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongo connection error'));

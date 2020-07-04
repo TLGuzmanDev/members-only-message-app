@@ -91,7 +91,7 @@ const signup_post = [
         } else {
           // Save user and redirect to index page
           await user.save();
-          return res.redirect('/');
+          return res.redirect('/login');
         }
       } catch (error) {
         return next(error);
@@ -219,6 +219,43 @@ const membership_post = [
   },
 ];
 
+const message_delete_get = (req, res, next) => {
+  if (!req.user) {
+    return res.redirect('/login');
+  }
+
+  Message.findById(req.params.id)
+    .populate('user')
+    .exec((err, message) => {
+      if (err) {
+        return next(err);
+      }
+      if (!message) {
+        const error = new Error('Message not found');
+        error.status = 404;
+        return next(error);
+      }
+      res.render('message_delete', {
+        title: 'Delete message',
+        user: req.user,
+        message,
+      });
+    });
+};
+
+const message_delete_post = (req, res, next) => {
+  if (!req.user) {
+    return res.redirect('/login');
+  }
+
+  Message.findByIdAndRemove(req.body.message, (err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect('/');
+  });
+};
+
 module.exports = {
   index,
   signup_get,
@@ -230,4 +267,6 @@ module.exports = {
   message_create_post,
   membership_get,
   membership_post,
+  message_delete_get,
+  message_delete_post,
 };

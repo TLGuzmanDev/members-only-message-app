@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .row.d-flex.justify-content-center
+    .col-sm-10.d-flex.flex-column.align-items-center
+      if user && user.admin_status
+        h1.m-3= title
+        .alert.alert-danger Are you sure you want to permanently delete this message?
+
+        if message
+          .card.my-2.w-75.shadow-sm
+            .card-header
+              h5.card-title.mb-0= message.title
+
+            .card-body
+              h6.card-subtitle.text-muted.text-capitalize.mb-1 posted by #{message.user.username}
+              h6.card-subtitle.text-muted.text-capitalize= message.elapsed_time
+              p.card-text=message.text
+
+          form(action='' method='POST')
+            .form-group.d-none
+              label(for='message') Message
+              input#message.form-control(type='text' name='message' value=(message.id) required readonly)
+            button.btn.btn-danger(type='submit') DELETE
+
+      else
+        .alert.alert-danger.my-3 You must have admin privileges to view this page!

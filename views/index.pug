@@ -9,10 +9,15 @@ block content
         each message in messages
           .card.my-2.w-75.shadow-sm
             .card-header
-              h5.card-title.mb-0= message.title
+              .d-flex.justify-content-between.align-items-baseline
+                h5.card-title.mb-0= message.title
+                if user && user.admin_status
+                  a.text-dark(href=(`/message/${message.id}/delete`))
+                    i.fas.fa-trash-alt
+
             .card-body
               if user && user.membership_status
-                h6.card-subtitle.text-muted.text-capitalize.mb-1 posted by #{message.user.name}
+                h6.card-subtitle.text-muted.text-capitalize.mb-1 posted by #{message.user.username}
                 h6.card-subtitle.text-muted.text-capitalize #{message.elapsed_time}
               else
                 h6.card-subtitle.text-muted.mb-1 by: ******
