@@ -104,6 +104,7 @@ const signup_post = [
 const login_get = (req, res, next) => {
   res.render('login_form', {
     title: 'Login',
+    user: req.user,
   });
 };
 
@@ -168,6 +169,56 @@ const message_create_post = [
   },
 ];
 
+const membership_get = (req, res, next) => {
+  res.render('membership_form', {
+    title: 'Membership form',
+    user: req.user,
+  });
+};
+const membership_post = [
+  body('password')
+    .trim()
+    .custom((value) => {
+      if (value !== 'jokerz') {
+        throw new Error('Sorry, password is incorrect.');
+      }
+      // success of custom validator
+      return true;
+    }),
+  (req, res, next) => {
+    // Extract validation errors from request
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // Request contained errors
+      // Render form with sanitized values and errors
+      return res.render('membership_form', {
+        title: 'Membership form',
+        user: req.user,
+        errors: errors.array(),
+      });
+    } else {
+      User.findById(req.user, (err, user) => {
+        if (err) {
+          return next(err);
+        }
+        if (!user) {
+          const error = new Error('User not found');
+          error.status = 404;
+          return next(error);
+        }
+        user.membership_status = true;
+        user.save((err) => {
+          if (err) {
+            return next(err);
+          }
+          res.redirect('/');
+        });
+      });
+    }
+  },
+];
+
 module.exports = {
   index,
   signup_get,
@@ -177,4 +228,6 @@ module.exports = {
   logout,
   message_create_get,
   message_create_post,
+  membership_get,
+  membership_post,
 };

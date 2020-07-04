@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  .row.d-flex.justify-content-center
+    .col-sm-6
+      if user
+        if !user.membership_status
+          h1.my-3= title
+          hr
+
+          form(action='' method='POST')
+            .form-group
+              label(for='user') User
+              input#user.form-control(type='text' name='user' value=(user.id) required readonly)
+
+            .form-group
+              label(for='password') Secret Password
+              input#password.form-control(type='password' name='password' placeholder='Enter secret password' required )
+              if errors
+                each error in errors
+                  if error.param === 'password'
+                    .small.text-danger= error.msg
+
+            button.btn.btn-primary(type='submit') Submit
+        else
+          .alert.alert-success.my-3 You (#{user.username}) are already a member!
+
+      else
+        .alert.alert-danger.my-3 You must sign up to become a member!

@@ -18,4 +18,8 @@ router.get('/message/create', indexController.message_create_get);
 
 router.post('/message/create', indexController.message_create_post);
 
+router.get('/membership', indexController.membership_get);
+
+router.post('/membership', indexController.membership_post);
+
 module.exports = router;

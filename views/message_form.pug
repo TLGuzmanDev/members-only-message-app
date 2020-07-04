@@ -3,10 +3,10 @@ extends layout
 block content
   .row.d-flex.justify-content-center
     .col-sm-6
-      h1.my-3= title
-      hr
-
       if user
+        h1.my-3= title
+        hr
+
         form(action='' method='POST')
           .form-group
             label(for='user') User
@@ -18,7 +18,7 @@ block content
             if errors
               each error in errors
                 if error.param === 'title'
-                  .small.text-danger - #{error.msg}
+                  .small.text-danger= error.msg
 
           .form-group
             .label(for='message') Message
@@ -26,9 +26,9 @@ block content
             if errors
               each error in errors
                 if error.param === 'message'
-                  .small.text-danger - #{error.msg}
+                  .small.text-danger= error.msg
 
           button.btn.btn-primary(type='submit') Submit
 
       else
-        h5 This page is only for members
+        .alert.alert-danger.my-3 You must sign up to create messages!

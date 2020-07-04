@@ -3,15 +3,18 @@ extends layout
 block content
   .row.d-flex.justify-content-center
     .col-sm-6
-      h1.my-3= title
-      hr
+      if !user
+        h1.my-3= title
+        hr
 
-      form(action='' method='POST')
-        .form-group
-          label(for='username') Username
-          input#username.form-control(type='text' name='username' placeholder='Enter username' required)
-        
-        .form-group
-          .label(for='password') Password
-          input#password.form-control(type='password' name='password' placeholder='Password' required)
-        button.btn.btn-primary(type='submit') Submit
+        form(action='' method='POST')
+          .form-group
+            label(for='username') Username
+            input#username.form-control(type='text' name='username' placeholder='Enter username' required)
+          
+          .form-group
+            .label(for='password') Password
+            input#password.form-control(type='password' name='password' placeholder='Password' required)
+          button.btn.btn-primary(type='submit') Submit
+      else
+        .alert.alert-success.my-3 Already logged in as #{user.username}!
